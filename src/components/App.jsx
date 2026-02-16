@@ -7,17 +7,27 @@ import chilli from "../images/chilli.png";
 
 const images = [avocado, banana, chilli];
 
-const cards = [...images, ...images].map((image, index) => ({
-  id: index,
-  image: image,
-  claseCarta: "",
-}));
+const createCards = () =>
+  [...images, ...images].map((image, index) => ({
+    id: index,
+    image: image,
+    claseCarta: "",
+  }));
+
+const shuffleCards = (cards) => cards.sort(() => Math.random() - 0.5);
 
 function App() {
-  const [boardCards, setBoardCards] = useState(
-    // eslint-disable-next-line react-hooks/purity
-    cards.sort(() => Math.random() - 0.5),
+  const [boardCards, setBoardCards] = useState(() =>
+    shuffleCards(createCards()),
   );
+
+  const resetGame = () => {
+    setBoardCards(shuffleCards(createCards()));
+  };
+
+  // Verificar si el juego está terminado
+  const isSolved = boardCards.every((card) => card.claseCarta === "solved");
+
   console.log(boardCards);
 
   const checkCards = () => {
@@ -44,6 +54,15 @@ function App() {
   const handleClick = (ev) => {
     console.log(ev.currentTarget);
 
+    // 1. Localizar la carta
+    const cartaId = parseInt(ev.currentTarget.id);
+    const cartaClicked = boardCards.find((card) => card.id === cartaId);
+
+    // Si la carta ya está resuelta, no hacer nada
+    if (cartaClicked.claseCarta === "solved") {
+      return;
+    }
+
     // Localizar las cartas ya volteadas
     const cartasVolteadas = boardCards.filter(
       (card) => card.claseCarta === "reversed",
@@ -52,10 +71,6 @@ function App() {
     if (cartasVolteadas.length >= 2) {
       return;
     }
-
-    // 1. Localizar la carta
-    const cartaId = parseInt(ev.currentTarget.id);
-    const cartaClicked = boardCards.find((card) => card.id === cartaId);
 
     console.log(cartaClicked);
 
@@ -78,6 +93,17 @@ function App() {
         {" "}
         <main className="main">
           <header className="header"></header>
+          {isSolved && (
+            <div className="modal-overlay">
+              <div className="modal-content">
+                <h2>🎉 ¡Ganaste! 🎉</h2>
+                <p>Encontraste todas las parejas</p>
+                <button className="reset-button" onClick={resetGame}>
+                  Volver a jugar
+                </button>
+              </div>
+            </div>
+          )}
           <ul className="board">
             {boardCards.map((cardObj) => (
               <li
