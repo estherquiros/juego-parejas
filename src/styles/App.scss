@@ -1,0 +1,155 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+
+  // Paleta de colores pastel
+  --primary: #e2ffb3; // Rosa pastel
+  --secondary: #fcfeea; // Azul pastel
+  --accent: #c8e6c9; // Verde pastel
+  --light: #fff9e6; // Amarillo muy claro
+  --dark-text: #5d4e60; // Texto oscuro suave
+  --shadow: rgba(93, 78, 96, 0.15);
+}
+
+body {
+  background: var(--light);
+  color: var(--dark-text);
+  min-height: 100vh;
+}
+.content {
+  background-image: url("../images/tiendita-background.jpeg");
+  background-size: contain;
+}
+
+.header {
+  height: 200px;
+  width: 100%;
+  background-image: url("../images/logo.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.main {
+  padding: 0.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh);
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  list-style-type: none;
+  max-width: fit-content;
+  width: 100%;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  height: calc(100dvh - 300px);
+
+  backdrop-filter: blur(10px);
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+.card {
+  aspect-ratio: 1 / 1;
+  background: #fed4d9;
+  border: none;
+  border-radius: 12px;
+  padding: 0;
+  font-size: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  transform-style: preserve-3d;
+  overflow: hidden;
+  padding: 20px;
+
+  &:hover:not(.solved) {
+    transform: translateY(-4px);
+  }
+
+  &:active:not(.solved) {
+    transform: translateY(-2px);
+  }
+
+  .front {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 3rem;
+    color: var(--primary);
+    filter: hue-rotate(-20deg);
+    opacity: 0.3;
+  }
+
+  .back {
+    display: none;
+    font-weight: bold;
+    color: white;
+    font-size: 0.8rem;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+}
+
+.card.reversed {
+  background: white;
+
+  .front {
+    display: none;
+  }
+
+  .back {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.card.solved {
+  background: var(--secondary);
+  cursor: default;
+  opacity: 1;
+  outline: 2px solid yellow;
+  outline-offset: 2px;
+  .front {
+    display: none;
+  }
+
+  .back {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &:hover {
+    transform: none;
+  }
+}
