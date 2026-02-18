@@ -58,9 +58,11 @@ body {
 
   backdrop-filter: blur(10px);
 
-  @media (max-width: 480px) {
+  @media (max-width: 1200px) {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
+    height: initial;
+    max-height: calc(100dvh - 300px);
   }
 }
 
@@ -80,6 +82,10 @@ body {
   transform-style: preserve-3d;
   overflow: hidden;
   padding: 20px;
+
+  @media (max-width: 1200px) {
+    height: 90px;
+  }
 
   &:hover:not(.solved) {
     transform: translateY(-4px);
